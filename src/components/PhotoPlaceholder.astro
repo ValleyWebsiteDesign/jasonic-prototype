@@ -1,0 +1,40 @@
+---
+import CategoryIcon from "./icons/CategoryIcon.astro";
+
+// Stands in for real photography (branch fronts, yard, products in situ)
+// that Jasonic will supply later. Uses an on-brand pattern rather than
+// stock photography, so nothing here needs to be swapped out for
+// licensing reasons — only for "we'd rather use our own shots" reasons.
+interface Props {
+  icon?: string;
+  label: string;
+  class?: string;
+  tone?: "navy" | "timber" | "amber";
+}
+
+const { icon, label, class: className = "", tone = "navy" } = Astro.props;
+
+const toneClasses: Record<string, string> = {
+  navy: "from-brand-navy-900 via-brand-navy-800 to-brand-navy-700 text-brand-navy-100",
+  timber: "from-brand-timber-700 via-brand-timber-600 to-brand-timber-500 text-brand-timber-100",
+  amber: "from-brand-amber-600 via-brand-amber-500 to-brand-amber-400 text-brand-amber-100",
+};
+---
+
+<div
+  class={`relative isolate flex items-end overflow-hidden rounded-lg bg-gradient-to-br ${toneClasses[tone]} ${className}`}
+>
+  <div
+    class="pointer-events-none absolute inset-0 opacity-20 mix-blend-overlay"
+    style="background-image: repeating-linear-gradient(135deg, currentColor 0, currentColor 2px, transparent 2px, transparent 18px);"
+  >
+  </div>
+  {
+    icon && (
+      <CategoryIcon name={icon} class="pointer-events-none absolute -right-6 -top-6 h-32 w-32 opacity-15" />
+    )
+  }
+  <span class="relative m-3 rounded bg-black/25 px-2 py-1 text-[11px] font-medium tracking-wide text-white/80 backdrop-blur-sm">
+    {label}
+  </span>
+</div>

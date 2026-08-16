@@ -1,0 +1,77 @@
+---
+import { site, branches, navLinks } from "../data/site";
+import { categories } from "../data/categories";
+
+const year = new Date().getFullYear();
+const footerCategories = categories.slice(0, 8);
+---
+
+<footer class="border-t border-neutral-line bg-brand-navy-950 text-brand-navy-100">
+  <div class="container-page grid gap-10 py-14 md:grid-cols-[1.3fr_1fr_1fr_1fr]">
+    <div>
+      <a href="/" class="flex items-center gap-2.5">
+        <span class="flex h-9 w-9 items-center justify-center rounded bg-white/10 text-sm font-bold text-brand-amber-400">
+          J
+        </span>
+        <span class="font-display text-lg font-bold tracking-tight text-white">Jasonic</span>
+      </a>
+      <p class="mt-4 max-w-xs text-sm leading-relaxed text-brand-navy-100/70">
+        {site.strapline}
+      </p>
+    </div>
+
+    <div>
+      <h3 class="text-sm font-semibold uppercase tracking-wide text-white">Shop by category</h3>
+      <ul class="mt-4 space-y-2.5 text-sm text-brand-navy-100/70">
+        {
+          footerCategories.map((cat) => (
+            <li>
+              <a href={`/shop/?category=${cat.slug}`} class="hover:text-brand-amber-400">
+                {cat.name}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+
+    <div>
+      <h3 class="text-sm font-semibold uppercase tracking-wide text-white">Site</h3>
+      <ul class="mt-4 space-y-2.5 text-sm text-brand-navy-100/70">
+        {
+          navLinks.map((link) => (
+            <li>
+              <a href={link.href} class="hover:text-brand-amber-400">
+                {link.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+
+    <div>
+      <h3 class="text-sm font-semibold uppercase tracking-wide text-white">Branches</h3>
+      <ul class="mt-4 space-y-4 text-sm text-brand-navy-100/70">
+        {
+          branches.map((branch) => (
+            <li>
+              <p class="font-medium text-white">{branch.name}</p>
+              <p>{branch.addressLines.join(", ")}</p>
+              <a href={branch.phoneHref} class="text-brand-amber-400 hover:text-brand-amber-300">
+                {branch.phone}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </div>
+
+  <div class="border-t border-white/10">
+    <div class="container-page flex flex-col gap-2 py-5 text-xs text-brand-navy-100/50 sm:flex-row sm:items-center sm:justify-between">
+      <p>&copy; {year} {site.legalName}. VAT no. {site.vatNumber} · Company reg. {site.companyRegNumber}</p>
+      <p>Prototype built by Valley Website Design — not a live Jasonic site.</p>
+    </div>
+  </div>
+</footer>

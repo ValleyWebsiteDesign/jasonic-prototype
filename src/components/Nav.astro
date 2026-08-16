@@ -1,0 +1,94 @@
+---
+import { navLinks, branches, site } from "../data/site";
+
+// Astro's `base` is stripped by the dev/build server from Astro.url, so
+// comparisons here are relative to the site root regardless of whether
+// this deploys at "/" or "/jasonic-prototype/".
+const currentPath = Astro.url.pathname.replace(import.meta.env.BASE_URL, "/").replace(/\/{2,}/g, "/");
+const primaryBranch = branches[0];
+
+function isActive(href: string) {
+  if (href === "/") return currentPath === "/";
+  return currentPath.startsWith(href);
+}
+---
+
+<header class="sticky top-0 z-40 border-b border-neutral-line bg-neutral-paper/95 backdrop-blur">
+  <div class="border-b border-neutral-line bg-brand-navy-950 text-brand-navy-100">
+    <div class="container-page flex flex-wrap items-center justify-between gap-2 py-1.5 text-xs">
+      <p class="flex items-center gap-1.5">
+        <span>Trading since {site.foundedYear}</span>
+        <span class="text-brand-amber-400">·</span>
+        <span class="hidden sm:inline">Family run, independent builders merchants</span>
+      </p>
+      <a href={primaryBranch.phoneHref} class="font-medium text-white hover:text-brand-amber-400">
+        {primaryBranch.phone}
+      </a>
+    </div>
+  </div>
+
+  <nav class="container-page flex items-center justify-between py-3.5" aria-label="Primary">
+    <a href="/" class="flex items-center gap-2.5 text-neutral-ink">
+      <span
+        class="flex h-9 w-9 items-center justify-center rounded bg-brand-navy-900 text-sm font-bold text-brand-amber-400"
+      >
+        J
+      </span>
+      <span class="flex flex-col leading-none">
+        <span class="font-display text-lg font-bold tracking-tight">Jasonic</span>
+        <span class="text-[11px] font-medium uppercase tracking-wider text-neutral-body/70">Builders Merchants</span>
+      </span>
+    </a>
+
+    <ul class="hidden items-center gap-8 md:flex">
+      {
+        navLinks.map((link) => (
+          <li>
+            <a
+              href={link.href}
+              class:list={[
+                "text-sm font-medium transition-colors hover:text-brand-amber-600",
+                isActive(link.href) ? "text-brand-amber-600" : "text-neutral-ink",
+              ]}
+            >
+              {link.label}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+
+    <div class="flex items-center gap-3">
+      <a
+        href="/contact/"
+        class="hidden rounded bg-brand-amber-500 px-4 py-2 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-brand-amber-600 sm:inline-block"
+      >
+        Get a quote
+      </a>
+      <details class="relative md:hidden">
+        <summary class="flex h-9 w-9 cursor-pointer list-none items-center justify-center rounded border border-neutral-line text-neutral-ink">
+          <svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+            <path d="M4 7h16M4 12h16M4 17h16" />
+          </svg>
+          <span class="sr-only">Menu</span>
+        </summary>
+        <ul class="absolute right-0 top-11 w-48 rounded-lg border border-neutral-line bg-neutral-paper p-2 shadow-lg">
+          {
+            navLinks.map((link) => (
+              <li>
+                <a href={link.href} class="block rounded px-3 py-2 text-sm font-medium text-neutral-ink hover:bg-neutral-surface">
+                  {link.label}
+                </a>
+              </li>
+            ))
+          }
+          <li class="mt-1 border-t border-neutral-line pt-2">
+            <a href="/contact/" class="block rounded bg-brand-amber-500 px-3 py-2 text-center text-sm font-semibold text-white">
+              Get a quote
+            </a>
+          </li>
+        </ul>
+      </details>
+    </div>
+  </nav>
+</header>

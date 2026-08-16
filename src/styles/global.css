@@ -1,0 +1,57 @@
+@import "tailwindcss";
+
+/*
+  Jasonic brand tokens — prototype palette.
+  Navy for trust/authority (established 1988), amber for the
+  "builders merchant" energy (hazard/hi-vis association without
+  being literal), warm timber tone as a secondary accent, and a warm
+  off-white instead of stark white to feel less "corporate SaaS".
+*/
+@theme {
+  --font-sans: "Jasonic Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-display: "Jasonic Display", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+
+  --color-brand-navy-950: #0b1526;
+  --color-brand-navy-900: #101f38;
+  --color-brand-navy-800: #182c4d;
+  --color-brand-navy-700: #223c66;
+  --color-brand-navy-600: #2c4d82;
+
+  --color-brand-amber-600: #c8590c;
+  --color-brand-amber-500: #e8720c;
+  --color-brand-amber-400: #f28c2e;
+  --color-brand-amber-100: #fde9d2;
+
+  --color-brand-timber-700: #6b4423;
+  --color-brand-timber-500: #8a5a34;
+  --color-brand-timber-300: #c9a781;
+
+  --color-neutral-ink: #211c17;
+  --color-neutral-body: #3f3a34;
+  --color-neutral-line: #e4ddd2;
+  --color-neutral-surface: #f7f4ee;
+  --color-neutral-paper: #fffdf9;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--color-neutral-paper);
+  color: var(--color-neutral-body);
+  font-family: var(--font-sans);
+}
+
+.container-page {
+  width: 100%;
+  max-width: 80rem;
+  margin-inline: auto;
+  padding-inline: 1.25rem;
+}
+
+@media (min-width: 640px) {
+  .container-page {
+    padding-inline: 2rem;
+  }
+}

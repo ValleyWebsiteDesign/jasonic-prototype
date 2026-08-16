@@ -1,0 +1,133 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import SectionHeading from "../../components/SectionHeading.astro";
+import ProductCard from "../../components/ProductCard.astro";
+import { categories } from "../../data/categories";
+import { products } from "../../data/products";
+---
+
+<BaseLayout title="Shop" description="Browse the full Jasonic product range across all 13 departments.">
+  <section class="border-b border-neutral-line bg-neutral-surface py-12">
+    <div class="container-page">
+      <SectionHeading
+        eyebrow="Shop"
+        title="Browse the full range"
+        description="Filter by department to find what you need, or call your local branch — our team can quote and source anything not listed here."
+      />
+    </div>
+  </section>
+
+  <section class="py-10">
+    <div class="container-page">
+      <div class="flex flex-col gap-6 lg:flex-row lg:gap-10">
+        <!-- Filters -->
+        <aside class="shrink-0 lg:w-64">
+          <div class="lg:sticky lg:top-24">
+            <label for="product-search" class="text-xs font-semibold uppercase tracking-wide text-neutral-body/70">
+              Search
+            </label>
+            <input
+              id="product-search"
+              type="search"
+              placeholder="Search products…"
+              class="mt-2 w-full rounded border border-neutral-line bg-neutral-paper px-3 py-2 text-sm text-neutral-ink placeholder:text-neutral-body/50 focus:border-brand-amber-500 focus:outline-none focus:ring-1 focus:ring-brand-amber-500"
+            />
+
+            <p class="mt-6 text-xs font-semibold uppercase tracking-wide text-neutral-body/70">Department</p>
+            <div id="category-filters" class="mt-3 flex flex-wrap gap-2 lg:flex-col lg:flex-nowrap lg:gap-1.5">
+              <button
+                type="button"
+                data-filter-category="all"
+                class="filter-chip rounded border border-neutral-line px-3 py-1.5 text-left text-xs font-medium text-neutral-ink transition-colors hover:border-brand-amber-500 lg:w-full lg:rounded-md lg:px-3 lg:py-2"
+                aria-pressed="true"
+              >
+                All departments
+              </button>
+              {
+                categories.map((cat) => (
+                  <button
+                    type="button"
+                    data-filter-category={cat.slug}
+                    class="filter-chip rounded border border-neutral-line px-3 py-1.5 text-left text-xs font-medium text-neutral-ink transition-colors hover:border-brand-amber-500 lg:w-full lg:rounded-md lg:px-3 lg:py-2"
+                    aria-pressed="false"
+                  >
+                    {cat.name}
+                  </button>
+                ))
+              }
+            </div>
+          </div>
+        </aside>
+
+        <!-- Results -->
+        <div class="flex-1">
+          <p id="results-count" class="mb-4 text-sm text-neutral-body/70"></p>
+          <div id="product-grid" class="grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-3">
+            {products.map((product) => <ProductCard product={product} />)}
+          </div>
+          <p id="no-results" class="hidden py-16 text-center text-sm text-neutral-body/70">
+            No products match that search — try a different department or term, or
+            <a href="/contact/" class="font-semibold text-brand-amber-600">get in touch</a>, we can likely still help.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<script>
+  const grid = document.getElementById("product-grid")!;
+  const cards = Array.from(grid.querySelectorAll<HTMLAnchorElement>("[data-category]"));
+  const chips = Array.from(document.querySelectorAll<HTMLButtonElement>("[data-filter-category]"));
+  const searchInput = document.getElementById("product-search") as HTMLInputElement;
+  const resultsCount = document.getElementById("results-count")!;
+  const noResults = document.getElementById("no-results")!;
+
+  const params = new URLSearchParams(window.location.search);
+  let activeCategory = params.get("category") ?? "all";
+  if (!chips.some((chip) => chip.dataset.filterCategory === activeCategory)) {
+    activeCategory = "all";
+  }
+
+  function applyFilters() {
+    const term = searchInput.value.trim().toLowerCase();
+    let visible = 0;
+
+    for (const card of cards) {
+      const matchesCategory = activeCategory === "all" || card.dataset.category === activeCategory;
+      const matchesTerm = !term || card.textContent!.toLowerCase().includes(term);
+      const show = matchesCategory && matchesTerm;
+      card.classList.toggle("hidden", !show);
+      if (show) visible += 1;
+    }
+
+    resultsCount.textContent = `Showing ${visible} of ${cards.length} products`;
+    noResults.classList.toggle("hidden", visible !== 0);
+
+    for (const chip of chips) {
+      const isActive = chip.dataset.filterCategory === activeCategory;
+      chip.setAttribute("aria-pressed", String(isActive));
+      chip.classList.toggle("bg-brand-navy-900", isActive);
+      chip.classList.toggle("text-white", isActive);
+      chip.classList.toggle("border-brand-navy-900", isActive);
+    }
+  }
+
+  chips.forEach((chip) => {
+    chip.addEventListener("click", () => {
+      activeCategory = chip.dataset.filterCategory ?? "all";
+      const url = new URL(window.location.href);
+      if (activeCategory === "all") {
+        url.searchParams.delete("category");
+      } else {
+        url.searchParams.set("category", activeCategory);
+      }
+      window.history.replaceState({}, "", url);
+      applyFilters();
+    });
+  });
+
+  searchInput.addEventListener("input", applyFilters);
+
+  applyFilters();
+</script>

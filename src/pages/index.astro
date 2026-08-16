@@ -1,0 +1,186 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Button from "../components/Button.astro";
+import SectionHeading from "../components/SectionHeading.astro";
+import PhotoPlaceholder from "../components/PhotoPlaceholder.astro";
+import ProductCard from "../components/ProductCard.astro";
+import CategoryIcon from "../components/icons/CategoryIcon.astro";
+import { site, valueProps, branches } from "../data/site";
+import { categories } from "../data/categories";
+import { getFeaturedProducts } from "../data/products";
+import { news } from "../data/news";
+
+const featured = getFeaturedProducts();
+---
+
+<BaseLayout title="Jasonic — Builders Merchants for South & Mid Wales">
+  <!-- Hero -->
+  <section class="border-b border-neutral-line bg-neutral-surface">
+    <div class="container-page grid gap-10 py-14 lg:grid-cols-2 lg:items-center lg:py-20">
+      <div>
+        <p class="text-xs font-semibold uppercase tracking-widest text-brand-amber-600">
+          Independent · Family run · Trading since {site.foundedYear}
+        </p>
+        <h1 class="mt-3 font-display text-4xl font-bold leading-tight tracking-tight text-neutral-ink sm:text-5xl">
+          Everything you need,<br /> from foundations to roof tops.
+        </h1>
+        <p class="mt-5 max-w-lg text-base leading-relaxed text-neutral-body">
+          {site.tagline}. Two branches, one straightforward promise: the right materials, expert advice, and
+          friendly service — every time.
+        </p>
+        <div class="mt-8 flex flex-wrap gap-3">
+          <Button href="/shop/" variant="primary">Browse products</Button>
+          <Button href="/contact/" variant="ghost">Get a quote</Button>
+        </div>
+        <dl class="mt-10 grid max-w-md grid-cols-3 gap-4 border-t border-neutral-line pt-6">
+          <div>
+            <dt class="text-2xl font-bold text-brand-navy-900">{new Date().getFullYear() - site.foundedYear}+</dt>
+            <dd class="text-xs text-neutral-body/70">Years trading</dd>
+          </div>
+          <div>
+            <dt class="text-2xl font-bold text-brand-navy-900">2</dt>
+            <dd class="text-xs text-neutral-body/70">South Wales branches</dd>
+          </div>
+          <div>
+            <dt class="text-2xl font-bold text-brand-navy-900">13</dt>
+            <dd class="text-xs text-neutral-body/70">Product departments</dd>
+          </div>
+        </dl>
+      </div>
+      <PhotoPlaceholder
+        icon="timber"
+        tone="navy"
+        label="Merthyr Tydfil branch yard"
+        class="aspect-[4/3] w-full lg:aspect-square"
+      />
+    </div>
+  </section>
+
+  <!-- Value props -->
+  <section class="border-b border-neutral-line bg-brand-navy-950 text-white">
+    <div class="container-page grid gap-8 py-10 sm:grid-cols-3">
+      {
+        valueProps.map((item) => (
+          <div>
+            <p class="font-display text-base font-semibold text-brand-amber-400">{item.title}</p>
+            <p class="mt-1.5 text-sm leading-relaxed text-brand-navy-100/70">{item.description}</p>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  <!-- Shop by category -->
+  <section class="border-b border-neutral-line py-16">
+    <div class="container-page">
+      <SectionHeading
+        eyebrow="Product range"
+        title="Shop by department"
+        description="From aggregates to UPVC, our branches stock the full range a trade or DIY project needs."
+      />
+      <div class="mt-10 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
+        {
+          categories.map((cat) => (
+            <a
+              href={`/shop/?category=${cat.slug}`}
+              class="group flex flex-col gap-3 rounded-lg border border-neutral-line p-5 transition-colors hover:border-brand-amber-500 hover:bg-brand-amber-100/40"
+            >
+              <CategoryIcon name={cat.icon} class="h-7 w-7 text-brand-navy-800 group-hover:text-brand-amber-600" />
+              <div>
+                <p class="text-sm font-semibold text-neutral-ink">{cat.name}</p>
+                <p class="mt-1 text-xs leading-relaxed text-neutral-body/70">{cat.shortDescription}</p>
+              </div>
+            </a>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured products -->
+  <section class="border-b border-neutral-line bg-neutral-surface py-16">
+    <div class="container-page">
+      <div class="flex flex-wrap items-end justify-between gap-4">
+        <SectionHeading eyebrow="This week" title="Featured lines" />
+        <a href="/shop/" class="text-sm font-semibold text-brand-navy-800 hover:text-brand-amber-600">
+          View all products →
+        </a>
+      </div>
+      <div class="mt-10 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        {featured.map((product) => <ProductCard product={product} />)}
+      </div>
+      <p class="mt-6 text-xs text-neutral-body/60">Free local delivery on orders over £150 + VAT.</p>
+    </div>
+  </section>
+
+  <!-- About teaser -->
+  <section class="border-b border-neutral-line py-16">
+    <div class="container-page grid gap-10 lg:grid-cols-2 lg:items-center">
+      <PhotoPlaceholder icon="doors" tone="timber" label="The Jasonic team" class="aspect-[4/3] w-full" />
+      <div>
+        <SectionHeading
+          eyebrow="Our story"
+          title={`Locally owned and family run since ${site.foundedYear}`}
+          description="We're committed to serving the needs of local trades people and DIY enthusiasts alike — with expert knowledge and customer service that's second to none."
+        />
+        <ul class="mt-6 space-y-3 text-sm text-neutral-body">
+          <li class="flex gap-2">
+            <span class="text-brand-amber-600">✓</span> Trusted by local builders and major house developers
+          </li>
+          <li class="flex gap-2">
+            <span class="text-brand-amber-600">✓</span> Supplying facilities management companies and local authorities
+          </li>
+          <li class="flex gap-2">
+            <span class="text-brand-amber-600">✓</span> Two branches across South & Mid Wales
+          </li>
+        </ul>
+        <Button href="/about/" variant="secondary" class="mt-7">
+          More about Jasonic
+        </Button>
+      </div>
+    </div>
+  </section>
+
+  <!-- News -->
+  <section class="border-b border-neutral-line bg-neutral-surface py-16">
+    <div class="container-page">
+      <SectionHeading eyebrow="News" title="Latest at Jasonic" />
+      <div class="mt-8 grid gap-5 sm:grid-cols-2">
+        {
+          news.map((item) => (
+            <article class="rounded-lg border border-neutral-line bg-neutral-paper p-6">
+              <p class="text-xs font-medium uppercase tracking-wide text-brand-amber-600">{item.date}</p>
+              <h3 class="mt-2 font-display text-lg font-semibold text-neutral-ink">{item.title}</h3>
+              <p class="mt-2 text-sm leading-relaxed text-neutral-body">{item.excerpt}</p>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- Branches -->
+  <section class="py-16">
+    <div class="container-page">
+      <SectionHeading eyebrow="Visit us" title="Two branches, one team" />
+      <div class="mt-8 grid gap-5 sm:grid-cols-2">
+        {
+          branches.map((branch) => (
+            <div class="flex flex-col justify-between rounded-lg border border-neutral-line p-6">
+              <div>
+                <h3 class="font-display text-lg font-semibold text-neutral-ink">{branch.name}</h3>
+                <p class="mt-2 text-sm leading-relaxed text-neutral-body">{branch.addressLines.join(", ")}</p>
+              </div>
+              <a
+                href={branch.phoneHref}
+                class="mt-5 inline-flex w-fit items-center gap-2 rounded bg-brand-navy-900 px-4 py-2.5 text-sm font-semibold text-white hover:bg-brand-navy-800"
+              >
+                Call {branch.phone}
+              </a>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,123 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import SectionHeading from "../components/SectionHeading.astro";
+import { branches } from "../data/site";
+---
+
+<BaseLayout title="Contact" description="Get in touch with Jasonic — call, email, or visit our Merthyr Tydfil or Taffs Well branch.">
+  <section class="border-b border-neutral-line bg-neutral-surface py-14">
+    <div class="container-page">
+      <SectionHeading
+        eyebrow="Contact"
+        title="Get a quote, or just ask us anything"
+        description="Call your local branch, send an enquiry below, or call in — our team is happy to advise before you order."
+      />
+    </div>
+  </section>
+
+  <section class="py-16">
+    <div class="container-page grid gap-12 lg:grid-cols-[1.1fr_1fr]">
+      <form
+        id="contact-form"
+        class="space-y-5 rounded-lg border border-neutral-line p-6 sm:p-8"
+        data-note="This prototype form doesn't send email — it's here to demonstrate the enquiry flow."
+      >
+        <div class="grid gap-5 sm:grid-cols-2">
+          <div>
+            <label for="name" class="text-sm font-medium text-neutral-ink">Name</label>
+            <input
+              id="name"
+              name="name"
+              type="text"
+              required
+              class="mt-1.5 w-full rounded border border-neutral-line px-3 py-2.5 text-sm focus:border-brand-amber-500 focus:outline-none focus:ring-1 focus:ring-brand-amber-500"
+            />
+          </div>
+          <div>
+            <label for="phone" class="text-sm font-medium text-neutral-ink">Phone</label>
+            <input
+              id="phone"
+              name="phone"
+              type="tel"
+              class="mt-1.5 w-full rounded border border-neutral-line px-3 py-2.5 text-sm focus:border-brand-amber-500 focus:outline-none focus:ring-1 focus:ring-brand-amber-500"
+            />
+          </div>
+        </div>
+        <div>
+          <label for="email" class="text-sm font-medium text-neutral-ink">Email</label>
+          <input
+            id="email"
+            name="email"
+            type="email"
+            required
+            class="mt-1.5 w-full rounded border border-neutral-line px-3 py-2.5 text-sm focus:border-brand-amber-500 focus:outline-none focus:ring-1 focus:ring-brand-amber-500"
+          />
+        </div>
+        <div>
+          <label for="branch" class="text-sm font-medium text-neutral-ink">Nearest branch</label>
+          <select
+            id="branch"
+            name="branch"
+            class="mt-1.5 w-full rounded border border-neutral-line bg-neutral-paper px-3 py-2.5 text-sm focus:border-brand-amber-500 focus:outline-none focus:ring-1 focus:ring-brand-amber-500"
+          >
+            {branches.map((branch) => <option value={branch.slug}>{branch.name}</option>)}
+            <option value="either">Either / not sure</option>
+          </select>
+        </div>
+        <div>
+          <label for="message" class="text-sm font-medium text-neutral-ink">What do you need?</label>
+          <textarea
+            id="message"
+            name="message"
+            rows="5"
+            required
+            placeholder="e.g. quantities, sizes, or a project you'd like advice on"
+            class="mt-1.5 w-full rounded border border-neutral-line px-3 py-2.5 text-sm focus:border-brand-amber-500 focus:outline-none focus:ring-1 focus:ring-brand-amber-500"
+          ></textarea>
+        </div>
+        <button
+          type="submit"
+          class="w-full rounded bg-brand-amber-500 px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-brand-amber-600 sm:w-auto"
+        >
+          Send enquiry
+        </button>
+        <p id="form-status" class="hidden text-sm font-medium text-brand-navy-800" role="status"></p>
+      </form>
+
+      <div class="space-y-6">
+        {
+          branches.map((branch) => (
+            <div class="rounded-lg border border-neutral-line p-6">
+              <h3 class="font-display text-lg font-semibold text-neutral-ink">{branch.name}</h3>
+              <p class="mt-2 text-sm leading-relaxed text-neutral-body">{branch.addressLines.join(", ")}</p>
+              <a href={branch.phoneHref} class="mt-3 inline-block text-sm font-semibold text-brand-amber-600">
+                {branch.phone}
+              </a>
+            </div>
+          ))
+        }
+        <div class="rounded-lg border border-neutral-line p-6 text-sm text-neutral-body">
+          <p class="font-semibold text-neutral-ink">Opening hours</p>
+          <dl class="mt-3 space-y-1.5">
+            <div class="flex justify-between"><dt>Mon – Fri</dt><dd>7:30am – 5:00pm</dd></div>
+            <div class="flex justify-between"><dt>Saturday</dt><dd>8:00am – 12:00pm</dd></div>
+            <div class="flex justify-between"><dt>Sunday</dt><dd>Closed</dd></div>
+          </dl>
+          <p class="mt-3 text-xs text-neutral-body/50">Placeholder hours — confirm actual hours before go-live.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<script>
+  const form = document.getElementById("contact-form") as HTMLFormElement;
+  const status = document.getElementById("form-status")!;
+
+  form.addEventListener("submit", (event) => {
+    event.preventDefault();
+    status.textContent = "Thanks — this is a prototype, so nothing was actually sent. A real build would email your enquiry to the nearest branch.";
+    status.classList.remove("hidden");
+    form.reset();
+  });
+</script>

@@ -2,35 +2,32 @@
 
 /*
   Jasonic brand tokens — prototype palette.
-  Navy for trust/authority (established 1988), amber for the
-  "builders merchant" energy (hazard/hi-vis association without
-  being literal), warm timber tone as a secondary accent, and a warm
-  off-white instead of stark white to feel less "corporate SaaS".
+  Jasonic's actual brand colours: red and white as the dominant pair,
+  with black used sparingly for smaller elements (text, thin UI
+  accents) rather than large blocks.
 */
 @theme {
   --font-sans: "Jasonic Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   --font-display: "Jasonic Display", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
 
-  --color-brand-navy-950: #0b1526;
-  --color-brand-navy-900: #101f38;
-  --color-brand-navy-800: #182c4d;
-  --color-brand-navy-700: #223c66;
-  --color-brand-navy-600: #2c4d82;
+  --color-brand-red-700: #a10f1f;
+  --color-brand-red-600: #c3132a;
+  --color-brand-red-500: #d6182f;
+  --color-brand-red-400: #e34a5c;
+  --color-brand-red-100: #fbdde1;
 
-  --color-brand-amber-600: #c8590c;
-  --color-brand-amber-500: #e8720c;
-  --color-brand-amber-400: #f28c2e;
-  --color-brand-amber-100: #fde9d2;
+  --color-brand-ink-950: #0a0a0b;
+  --color-brand-ink-900: #121214;
+  --color-brand-ink-800: #1c1c1f;
+  --color-brand-ink-700: #29292d;
+  --color-brand-ink-600: #3a3a40;
+  --color-brand-ink-100: #e7e7ea;
 
-  --color-brand-timber-700: #6b4423;
-  --color-brand-timber-500: #8a5a34;
-  --color-brand-timber-300: #c9a781;
-
-  --color-neutral-ink: #211c17;
-  --color-neutral-body: #3f3a34;
-  --color-neutral-line: #e4ddd2;
-  --color-neutral-surface: #f7f4ee;
-  --color-neutral-paper: #fffdf9;
+  --color-neutral-ink: #16151a;
+  --color-neutral-body: #3f3d42;
+  --color-neutral-line: #e3e1e4;
+  --color-neutral-surface: #f7f6f7;
+  --color-neutral-paper: #ffffff;
 }
 
 html {

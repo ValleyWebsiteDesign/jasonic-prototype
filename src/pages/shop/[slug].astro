@@ -24,10 +24,10 @@ const priceFormatter = new Intl.NumberFormat("en-GB", { style: "currency", curre
 
 <BaseLayout title={product.name} description={product.description}>
   <div class="container-page py-6 text-sm text-neutral-body/70">
-    <a href="/shop/" class="hover:text-brand-amber-600">Shop</a>
+    <a href="/shop/" class="hover:text-brand-red-600">Shop</a>
     <span class="mx-1.5">/</span>
     {category && (
-      <a href={`/shop/?category=${category.slug}`} class="hover:text-brand-amber-600">
+      <a href={`/shop/?category=${category.slug}`} class="hover:text-brand-red-600">
         {category.name}
       </a>
     )}
@@ -37,22 +37,22 @@ const priceFormatter = new Intl.NumberFormat("en-GB", { style: "currency", curre
 
   <section class="container-page grid gap-10 pb-16 lg:grid-cols-2">
     <div class="flex aspect-square items-center justify-center rounded-lg bg-neutral-surface">
-      <CategoryIcon name={category?.icon ?? "tools"} class="h-28 w-28 text-brand-navy-700/25" />
+      <CategoryIcon name={category?.icon ?? "tools"} class="h-28 w-28 text-brand-ink-700/25" />
     </div>
 
     <div>
       {category && (
-        <a href={`/shop/?category=${category.slug}`} class="text-xs font-semibold uppercase tracking-wide text-brand-amber-600">
+        <a href={`/shop/?category=${category.slug}`} class="text-xs font-semibold uppercase tracking-wide text-brand-red-600">
           {category.name}
         </a>
       )}
       <h1 class="mt-2 font-display text-2xl font-bold tracking-tight text-neutral-ink sm:text-3xl">{product.name}</h1>
       <p class="mt-1 text-xs text-neutral-body/50">SKU {product.sku}</p>
 
-      <p class="mt-5 text-2xl font-bold text-brand-navy-900">
+      <p class="mt-5 text-2xl font-bold text-brand-ink-900">
         {
           product.callForPrice ? (
-            <span class="text-brand-amber-600">Call for a quote</span>
+            <span class="text-brand-red-600">Call for a quote</span>
           ) : (
             <>
               {priceFormatter.format(product.price)}

@@ -9,15 +9,14 @@ interface Props {
   icon?: string;
   label: string;
   class?: string;
-  tone?: "navy" | "timber" | "amber";
+  tone?: "ink" | "red";
 }
 
-const { icon, label, class: className = "", tone = "navy" } = Astro.props;
+const { icon, label, class: className = "", tone = "ink" } = Astro.props;
 
 const toneClasses: Record<string, string> = {
-  navy: "from-brand-navy-900 via-brand-navy-800 to-brand-navy-700 text-brand-navy-100",
-  timber: "from-brand-timber-700 via-brand-timber-600 to-brand-timber-500 text-brand-timber-100",
-  amber: "from-brand-amber-600 via-brand-amber-500 to-brand-amber-400 text-brand-amber-100",
+  ink: "from-brand-ink-950 via-brand-ink-900 to-brand-ink-800 text-brand-ink-100",
+  red: "from-brand-red-700 via-brand-red-600 to-brand-red-500 text-brand-red-100",
 };
 ---
 

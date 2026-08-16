@@ -30,7 +30,7 @@ import { branches } from "../data/site";
               name="name"
               type="text"
               required
-              class="mt-1.5 w-full rounded border border-neutral-line px-3 py-2.5 text-sm focus:border-brand-amber-500 focus:outline-none focus:ring-1 focus:ring-brand-amber-500"
+              class="mt-1.5 w-full rounded border border-neutral-line px-3 py-2.5 text-sm focus:border-brand-red-500 focus:outline-none focus:ring-1 focus:ring-brand-red-500"
             />
           </div>
           <div>
@@ -39,7 +39,7 @@ import { branches } from "../data/site";
               id="phone"
               name="phone"
               type="tel"
-              class="mt-1.5 w-full rounded border border-neutral-line px-3 py-2.5 text-sm focus:border-brand-amber-500 focus:outline-none focus:ring-1 focus:ring-brand-amber-500"
+              class="mt-1.5 w-full rounded border border-neutral-line px-3 py-2.5 text-sm focus:border-brand-red-500 focus:outline-none focus:ring-1 focus:ring-brand-red-500"
             />
           </div>
         </div>
@@ -50,7 +50,7 @@ import { branches } from "../data/site";
             name="email"
             type="email"
             required
-            class="mt-1.5 w-full rounded border border-neutral-line px-3 py-2.5 text-sm focus:border-brand-amber-500 focus:outline-none focus:ring-1 focus:ring-brand-amber-500"
+            class="mt-1.5 w-full rounded border border-neutral-line px-3 py-2.5 text-sm focus:border-brand-red-500 focus:outline-none focus:ring-1 focus:ring-brand-red-500"
           />
         </div>
         <div>
@@ -58,7 +58,7 @@ import { branches } from "../data/site";
           <select
             id="branch"
             name="branch"
-            class="mt-1.5 w-full rounded border border-neutral-line bg-neutral-paper px-3 py-2.5 text-sm focus:border-brand-amber-500 focus:outline-none focus:ring-1 focus:ring-brand-amber-500"
+            class="mt-1.5 w-full rounded border border-neutral-line bg-neutral-paper px-3 py-2.5 text-sm focus:border-brand-red-500 focus:outline-none focus:ring-1 focus:ring-brand-red-500"
           >
             {branches.map((branch) => <option value={branch.slug}>{branch.name}</option>)}
             <option value="either">Either / not sure</option>
@@ -72,16 +72,16 @@ import { branches } from "../data/site";
             rows="5"
             required
             placeholder="e.g. quantities, sizes, or a project you'd like advice on"
-            class="mt-1.5 w-full rounded border border-neutral-line px-3 py-2.5 text-sm focus:border-brand-amber-500 focus:outline-none focus:ring-1 focus:ring-brand-amber-500"
+            class="mt-1.5 w-full rounded border border-neutral-line px-3 py-2.5 text-sm focus:border-brand-red-500 focus:outline-none focus:ring-1 focus:ring-brand-red-500"
           ></textarea>
         </div>
         <button
           type="submit"
-          class="w-full rounded bg-brand-amber-500 px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-brand-amber-600 sm:w-auto"
+          class="w-full rounded bg-brand-red-500 px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-brand-red-600 sm:w-auto"
         >
           Send enquiry
         </button>
-        <p id="form-status" class="hidden text-sm font-medium text-brand-navy-800" role="status"></p>
+        <p id="form-status" class="hidden text-sm font-medium text-brand-ink-800" role="status"></p>
       </form>
 
       <div class="space-y-6">
@@ -90,7 +90,7 @@ import { branches } from "../data/site";
             <div class="rounded-lg border border-neutral-line p-6">
               <h3 class="font-display text-lg font-semibold text-neutral-ink">{branch.name}</h3>
               <p class="mt-2 text-sm leading-relaxed text-neutral-body">{branch.addressLines.join(", ")}</p>
-              <a href={branch.phoneHref} class="mt-3 inline-block text-sm font-semibold text-brand-amber-600">
+              <a href={branch.phoneHref} class="mt-3 inline-block text-sm font-semibold text-brand-red-600">
                 {branch.phone}
               </a>
             </div>

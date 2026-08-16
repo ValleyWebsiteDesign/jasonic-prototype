@@ -30,7 +30,7 @@ import { products } from "../../data/products";
               id="product-search"
               type="search"
               placeholder="Search products…"
-              class="mt-2 w-full rounded border border-neutral-line bg-neutral-paper px-3 py-2 text-sm text-neutral-ink placeholder:text-neutral-body/50 focus:border-brand-amber-500 focus:outline-none focus:ring-1 focus:ring-brand-amber-500"
+              class="mt-2 w-full rounded border border-neutral-line bg-neutral-paper px-3 py-2 text-sm text-neutral-ink placeholder:text-neutral-body/50 focus:border-brand-red-500 focus:outline-none focus:ring-1 focus:ring-brand-red-500"
             />
 
             <p class="mt-6 text-xs font-semibold uppercase tracking-wide text-neutral-body/70">Department</p>
@@ -38,7 +38,7 @@ import { products } from "../../data/products";
               <button
                 type="button"
                 data-filter-category="all"
-                class="filter-chip rounded border border-neutral-line px-3 py-1.5 text-left text-xs font-medium text-neutral-ink transition-colors hover:border-brand-amber-500 lg:w-full lg:rounded-md lg:px-3 lg:py-2"
+                class="filter-chip rounded border border-neutral-line px-3 py-1.5 text-left text-xs font-medium text-neutral-ink transition-colors hover:border-brand-red-500 lg:w-full lg:rounded-md lg:px-3 lg:py-2"
                 aria-pressed="true"
               >
                 All departments
@@ -48,7 +48,7 @@ import { products } from "../../data/products";
                   <button
                     type="button"
                     data-filter-category={cat.slug}
-                    class="filter-chip rounded border border-neutral-line px-3 py-1.5 text-left text-xs font-medium text-neutral-ink transition-colors hover:border-brand-amber-500 lg:w-full lg:rounded-md lg:px-3 lg:py-2"
+                    class="filter-chip rounded border border-neutral-line px-3 py-1.5 text-left text-xs font-medium text-neutral-ink transition-colors hover:border-brand-red-500 lg:w-full lg:rounded-md lg:px-3 lg:py-2"
                     aria-pressed="false"
                   >
                     {cat.name}
@@ -61,13 +61,14 @@ import { products } from "../../data/products";
 
         <!-- Results -->
         <div class="flex-1">
+          <p id="group-note" class="mb-3 hidden text-sm text-neutral-body/70"></p>
           <p id="results-count" class="mb-4 text-sm text-neutral-body/70"></p>
           <div id="product-grid" class="grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-3">
             {products.map((product) => <ProductCard product={product} />)}
           </div>
           <p id="no-results" class="hidden py-16 text-center text-sm text-neutral-body/70">
             No products match that search — try a different department or term, or
-            <a href="/contact/" class="font-semibold text-brand-amber-600">get in touch</a>, we can likely still help.
+            <a href="/contact/" class="font-semibold text-brand-red-600">get in touch</a>, we can likely still help.
           </p>
         </div>
       </div>
@@ -81,20 +82,28 @@ import { products } from "../../data/products";
   const chips = Array.from(document.querySelectorAll<HTMLButtonElement>("[data-filter-category]"));
   const searchInput = document.getElementById("product-search") as HTMLInputElement;
   const resultsCount = document.getElementById("results-count")!;
+  const groupNote = document.getElementById("group-note")!;
   const noResults = document.getElementById("no-results")!;
 
+  const knownSlugs = new Set(chips.map((c) => c.dataset.filterCategory).filter((s) => s !== "all"));
+
+  // ?category= arrives either as a single department slug (from a sidebar
+  // chip or footer link) or a comma-separated list (from a header nav
+  // group, e.g. "roofing,insulation"). Empty/unrecognised means "all".
   const params = new URLSearchParams(window.location.search);
-  let activeCategory = params.get("category") ?? "all";
-  if (!chips.some((chip) => chip.dataset.filterCategory === activeCategory)) {
-    activeCategory = "all";
-  }
+  let activeCategories = (params.get("category") ?? "")
+    .split(",")
+    .map((s) => s.trim())
+    .filter((s) => knownSlugs.has(s));
+
+  searchInput.value = params.get("q") ?? "";
 
   function applyFilters() {
     const term = searchInput.value.trim().toLowerCase();
     let visible = 0;
 
     for (const card of cards) {
-      const matchesCategory = activeCategory === "all" || card.dataset.category === activeCategory;
+      const matchesCategory = activeCategories.length === 0 || activeCategories.includes(card.dataset.category ?? "");
       const matchesTerm = !term || card.textContent!.toLowerCase().includes(term);
       const show = matchesCategory && matchesTerm;
       card.classList.toggle("hidden", !show);
@@ -104,23 +113,35 @@ import { products } from "../../data/products";
     resultsCount.textContent = `Showing ${visible} of ${cards.length} products`;
     noResults.classList.toggle("hidden", visible !== 0);
 
+    const singleMatch = activeCategories.length === 1 ? activeCategories[0] : activeCategories.length === 0 ? "all" : null;
     for (const chip of chips) {
-      const isActive = chip.dataset.filterCategory === activeCategory;
+      const isActive = chip.dataset.filterCategory === singleMatch;
       chip.setAttribute("aria-pressed", String(isActive));
-      chip.classList.toggle("bg-brand-navy-900", isActive);
+      chip.classList.toggle("bg-brand-ink-900", isActive);
       chip.classList.toggle("text-white", isActive);
-      chip.classList.toggle("border-brand-navy-900", isActive);
+      chip.classList.toggle("border-brand-ink-900", isActive);
+    }
+
+    if (singleMatch === null) {
+      const names = chips
+        .filter((c) => activeCategories.includes(c.dataset.filterCategory ?? ""))
+        .map((c) => c.textContent!.trim());
+      groupNote.textContent = `Filtered to: ${names.join(", ")}`;
+      groupNote.classList.remove("hidden");
+    } else {
+      groupNote.classList.add("hidden");
     }
   }
 
   chips.forEach((chip) => {
     chip.addEventListener("click", () => {
-      activeCategory = chip.dataset.filterCategory ?? "all";
+      const slug = chip.dataset.filterCategory ?? "all";
+      activeCategories = slug === "all" ? [] : [slug];
       const url = new URL(window.location.href);
-      if (activeCategory === "all") {
+      if (activeCategories.length === 0) {
         url.searchParams.delete("category");
       } else {
-        url.searchParams.set("category", activeCategory);
+        url.searchParams.set("category", activeCategories.join(","));
       }
       window.history.replaceState({}, "", url);
       applyFilters();
